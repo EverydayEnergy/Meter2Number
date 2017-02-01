@@ -1,6 +1,9 @@
 package tw.com.everydayenergy.meter2number;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.VideoView;
 
 public class Meter2Number extends AppCompatActivity {
 
@@ -34,8 +38,10 @@ public class Meter2Number extends AppCompatActivity {
         });
 
         // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+        //TextView tv = (TextView) findViewById(R.id.sample_text);
+        //tv.setText(stringFromJNI());
+        mVideoView = (VideoView) findViewById(R.id.sample_video);
+        dispatchTakeVideoIntent();
     }
 
     @Override
@@ -65,4 +71,23 @@ public class Meter2Number extends AppCompatActivity {
      * which is packaged with this application.
      */
     public native String stringFromJNI();
+
+    static final int REQUEST_VIDEO_CAPTURE = 1;
+
+    private VideoView mVideoView;
+
+    private void dispatchTakeVideoIntent() {
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
+            Uri videoUri = intent.getData();
+            mVideoView.setVideoURI(videoUri);
+        }
+    }
 }
