@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.TextView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +17,7 @@ import android.widget.VideoView;
 
 public class Meter2Number extends AppCompatActivity {
 
+    private static final String TAG = "Meter2Number";
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
@@ -85,9 +87,12 @@ public class Meter2Number extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.e(TAG, "onActivityResult");
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
             Uri videoUri = intent.getData();
+            Log.e(TAG, "VideoURI="+videoUri.toString());
             mVideoView.setVideoURI(videoUri);
+            mVideoView.start();
         }
     }
 }
