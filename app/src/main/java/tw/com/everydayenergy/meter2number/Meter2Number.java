@@ -74,7 +74,7 @@ public class Meter2Number extends AppCompatActivity {
      */
     public native String stringFromJNI();
 
-    static final int REQUEST_VIDEO_CAPTURE = 1;
+    private static final int REQUEST_VIDEO_CAPTURE = 1;
 
     private VideoView mVideoView;
 
